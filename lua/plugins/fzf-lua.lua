@@ -28,6 +28,17 @@ return {
             { '<leader>fg', '<cmd>FzfLua grep_visual<cr>', desc = 'Grep', mode = 'x' },
             { '<leader>fh', '<cmd>FzfLua help_tags<cr>', desc = 'Help' },
             {
+                '<leader>fn',
+                function()
+                require('fzf-lua').files { cwd = vim.fn.stdpath 'config' }
+                end,
+                desc = 'Neovim files',
+            },
+
+            { '<leader>fp', '<cmd>FzfLua git_files<cr>', desc = 'Git files' },
+
+
+            {
                 '<leader>fr',
                 function()
                     -- Read from ShaDa to include files that were already deleted from the buffer list.
