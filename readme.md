@@ -1,5 +1,5 @@
 Based on [MariaSolOs nvim dotfiles](https://github.com/MariaSolOs/dotfiles/tree/main/.config/nvim).
-Requires nvim v0.11 or higher.
+Requires nvim v0.11 or higher. Binary releases for older architectures can be found [here](https://github.com/neovim/neovim-releases/releases).
 
 ## Notes
 
