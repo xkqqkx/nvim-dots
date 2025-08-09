@@ -1,0 +1,39 @@
+{
+  "$schema": "https://raw.githubusercontent.com/sumneko/vscode-lua/master/setting/schema.json",
+  "runtime": {
+    "version": "LuaJIT"
+  },
+  "workspace": {
+    "checkThirdParty": false,
+    "library": [
+      // Runtime and builtin libraries.
+      "$VIMRUNTIME/lua",
+      "${3rd}/luv/library",
+      // Extra configuration helpers.
+      "lua/float_term.lua",
+      "lua/icons.lua",
+      // Include some plugins for API completion.
+      "$HOME/.local/share/nvim/lazy/LuaSnip/lua",
+      "$HOME/.local/share/nvim/lazy/blink.cmp/lua",
+      "$HOME/.local/share/nvim/lazy/codecompanion.nvim/lua",
+      "$HOME/.local/share/nvim/lazy/diffview.nvim/lua",
+      "$HOME/.local/share/nvim/lazy/flash.nvim/lua",
+      "$HOME/.local/share/nvim/lazy/fzf-lua/lua",
+      "$HOME/.local/share/nvim/lazy/gitlinker.nvim/lua",
+      "$HOME/.local/share/nvim/lazy/grug-far.nvim/lua",
+      "$HOME/.local/share/nvim/lazy/lazy.nvim/lua",
+      "$HOME/.local/share/nvim/lazy/mini.ai/lua",
+      "$HOME/.local/share/nvim/lazy/mini.bufremove/lua",
+      "$HOME/.local/share/nvim/lazy/mini.clue/lua",
+      "$HOME/.local/share/nvim/lazy/mini.files/lua",
+      "$HOME/.local/share/nvim/lazy/mini.splitjoin/lua",
+      "$HOME/.local/share/nvim/lazy/nvim-autopairs/lua",
+      "$HOME/.local/share/nvim/lazy/nvim-dap-view/lua",
+      "$HOME/.local/share/nvim/lazy/nvim-dap/lua",
+      "$HOME/.local/share/nvim/lazy/nvim-jdtls/lua",
+      "$HOME/.local/share/nvim/lazy/nvim-treesitter-context/lua",
+      "$HOME/.local/share/nvim/lazy/overseer.nvim/lua/overseer/init.lua",
+      "$HOME/.local/share/nvim/lazy/quicker.nvim/lua"
+    ]
+  }
+}
