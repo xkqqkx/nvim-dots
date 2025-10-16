@@ -18,6 +18,9 @@ vim.keymap.set('n', 'gQ', 'mzgggqG`z<cmd>delmarks z<cr>zz', { desc = 'Format buf
 -- Open the package manager.
 vim.keymap.set('n', '<leader>L', '<cmd>Lazy<cr>', { desc = 'Lazy' })
 
+-- Open Neogit.
+vim.keymap.set('n', '<leader>N', '<cmd>Neogit<cr>', { desc = 'Neogit' })
+
 -- Switch between windows.
 vim.keymap.set('n', '<C-h>', '<C-w>h', { desc = 'Move to the left window', remap = true })
 vim.keymap.set('n', '<C-j>', '<C-w>j', { desc = 'Move to the bottom window', remap = true })
