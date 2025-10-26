@@ -2,14 +2,17 @@
 -- Integrates Claude AI (via Anthropic API) for code assistance
 -- Features: chat interface, inline suggestions, and agent capabilities
 -- Keybindings: <leader>at (toggle chat), <leader>aa (add to chat), <leader>ay/an (accept/reject inline changes)
+-- See the plugin files in ~/.local/share/nvim/lazy/codecompanion.nvim/lua/
 return {
     {
         'olimorris/codecompanion.nvim',
         cmd = 'CodeCompanion',
         dependencies = { 'nvim-lua/plenary.nvim' },
+
         keys = {
             { '<leader>at', '<cmd>CodeCompanionChat Toggle<cr>', desc = 'Toggle CodeCompanion chat' },
             { '<leader>aa', '<cmd>CodeCompanionChat Add<cr>', desc = 'Add to CodeCompanion chat', mode = 'x' },
+            { '<leader>ax', '<cmd>CodeCompanionActions<cr>', desc = 'Open CodeCompanion actions' },
         },
         opts = {
             log_level = 'DEBUG',
@@ -28,7 +31,7 @@ return {
                         })
                     end,
                     opts = {
-                        timeout = 30000,
+                        timeout = 40000,
                     },
                 },
             },
@@ -59,6 +62,9 @@ return {
                             description = 'Clear chat',
                         },
                     },
+                },
+                diff = {
+                    provider = 'diffview',
                 },
             },
         },
