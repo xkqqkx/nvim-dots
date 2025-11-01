@@ -30,6 +30,20 @@ return {
                             },
                         })
                     end,
+                    gemini = function()
+                        return require("codecompanion.adapters").extend("gemini", {
+                            env = {
+                                 api_key = 'GEMINI_API_KEY',
+                            },
+                            schema = {
+                                model = {
+                                    --default="gemini-2.5-pro",
+                                    default="gemini-2.5-flash",
+                                },
+                            },
+                        })
+                    end,
+
                     opts = {
                         timeout = 40000,
                     },
@@ -64,9 +78,12 @@ return {
                     },
                 },
                 diff = {
-                    provider = 'diffview',
+                    provider = 'mini.diff',
                 },
             },
         },
+
+        require("codecompanion_modes").setup()
     },
+
 }
