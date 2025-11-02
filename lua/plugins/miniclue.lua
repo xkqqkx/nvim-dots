@@ -92,7 +92,7 @@ return {
                     { mode = 'n', keys = '<leader>d', desc = '+debug' },
                     { mode = 'n', keys = '<leader>f', desc = '+find' },
                     { mode = 'n', keys = '<leader>o', desc = '+overseer' },
-                    { mode = 'n', keys = '<leader>t', desc = '+tabs' },
+                    { mode = 'n', keys = '<leader>t', desc = '+toggle' },
                     { mode = 'n', keys = '<leader>x', desc = '+loclist/quickfix' },
                     { mode = 'n', keys = '[', desc = '+prev' },
                     { mode = 'n', keys = ']', desc = '+next' },
