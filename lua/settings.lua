@@ -18,6 +18,7 @@ vim.opt.listchars = { trail = '⋅', tab = '  ↦' }
 
 -- Show line numbers.
 vim.wo.number = true
+vim.o.relativenumber = false
 
 -- Enable mouse mode.
 vim.o.mouse = 'a'
