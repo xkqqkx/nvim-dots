@@ -12,3 +12,9 @@ from `./lsp` folder
 ### 2025-08-08
 factored out from my dotfiles
 
+### 2025-11-02
+set up of codecompanion for gemini models. The API key can be obtained
+- gemini [here](https://aistudio.google.com/usage?timeRange=last-28-days)
+- anthropic [here](https://console.anthropic.com/usage?date=2025-10)
+
+Gemini has free tier for Gemini 2.5 Pro (very slow) and Gemini 2.5 Flash models. For Anthropic I used Haiku 4.5 with prepaid credits.
