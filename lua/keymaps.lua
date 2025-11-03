@@ -65,7 +65,6 @@ vim.keymap.set('i', '<F5>', [[<C-R>=strftime("%Y-%m-%d")<CR>]], { desc = 'insert
 -- see https://stackoverflow.com/questions/74159815/how-can-i-create-a-toggle-to-completely-show-hide-the-line-number-gutter
 vim.keymap.set('n', '<leader>n', function()
     vim.o.signcolumn = vim.o.signcolumn == 'yes' and 'no' or 'yes'
-    vim.o.relativenumber = not vim.o.relativenumber
     vim.o.foldcolumn = vim.o.foldcolumn == '0' and '1' or '0'
     vim.o.number = not vim.o.number
     vim.o.list = not vim.o.list
