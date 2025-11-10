@@ -57,6 +57,8 @@ vim.keymap.set({ 'n', 't' }, '<leader>T', function()
     require('float_term').float_term('bash', { cwd = vim.fn.expand '%:p:h' })
 end, { desc = 'Toggle floating terminal' })
 
+vim.keymap.set('t', '<leader>tn', '<C-\\><C-n>', { noremap = true, silent = true, desc = 'Terminal Normal Mode' }) -- Standard C-\ C-n sequence does not work for me
+
 vim.keymap.set('n', '<leader><space>', ':buffer #<CR>', { desc = 'move to previously used buffer' })
 vim.keymap.set('n', '<F5>', [["=strftime("%Y-%m-%d")<CR>P]], { desc = 'insert date' })
 vim.keymap.set('i', '<F5>', [[<C-R>=strftime("%Y-%m-%d")<CR>]], { desc = 'insert date' })
