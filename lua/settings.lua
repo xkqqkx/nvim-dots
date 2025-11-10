@@ -11,6 +11,9 @@ vim.o.sw = 4
 vim.o.ts = 4
 vim.o.et = true
 
+-- always vsplit to the right
+vim.o.splitright = true
+
 -- Show whitespace.
 vim.opt.list = true
 --vim.opt.listchars = { space = '⋅', trail = '⋅', tab = '  ↦' }
