@@ -28,3 +28,29 @@ vim.api.nvim_create_user_command('Scratch', function()
         vim.api.nvim_set_option_value(name, value, { buf = buf })
     end
 end, { desc = 'Open a scratch buffer', nargs = 0 })
+
+
+vim.api.nvim_create_user_command('Format', function(opts)
+    local conform = require 'conform'
+    if opts.range > 0 then
+        -- Format only the selected range
+        local end_line = opts.line2
+        local end_col = vim.fn.getline(end_line):len()
+        conform.format {
+            async = false,
+            range = {
+                start = { opts.line1, 0 },
+                ['end'] = { end_line, end_col },
+            },
+            lsp_fallback = true,
+        }
+    else
+        -- Format the entire buffer
+        conform.format {
+            lsp_fallback = true,
+        }
+    end
+end, {
+    range = true,
+    desc = 'Format buffer or range using conform.nvim',
+})
