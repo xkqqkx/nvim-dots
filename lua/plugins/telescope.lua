@@ -65,7 +65,8 @@ return {
 
                 defaults = {
                     -- workaround until they fix the 'winborder' suport
-                    border = false,
+                    -- border = false,
+                    border = true,
                 },
                 extensions = {
                     ['ui-select'] = {
