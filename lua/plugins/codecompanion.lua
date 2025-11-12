@@ -80,6 +80,42 @@ return {
                             },
                         })
                     end,
+                    xai = function()
+                        return require('codecompanion.adapters').extend('xai', {
+                            name = 'xai',
+                            env = {
+                                api_key = 'XAI_API_KEY',
+                            },
+                            schema = {
+                                model = {
+                                    default = 'grok-code-fast-1',
+                                    choices = {
+                                        'grok-code-fast-1',
+                                        'grok-4-fast-reasoning',
+                                        'groi-4-fast-non-reasoning',
+                                    },
+                                },
+                            },
+                        })
+                    end,
+
+                    deepseek = function()
+                        return require('codecompanion.adapters').extend('deepseek', {
+                            name = 'deepseek',
+                            env = {
+                                api_key = 'DEEPSEEK_API_KEY',
+                            },
+                            schema = {
+                                model = {
+                                    default = 'deepseek-chat',
+                                    choices = {
+                                        'deepseek-chat',
+                                        'deepseek-reasoner',
+                                    },
+                                },
+                            },
+                        })
+                    end,
                     -- minimax_m2 = function()
                     --     return require('codecompanion.adapters').extend('openai', {
                     --         name = 'minimax_m2',

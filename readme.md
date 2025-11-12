@@ -53,6 +53,8 @@ set up of codecompanion for gemini models. The API key can be obtained
 - gemini (strajbl@gmail.com) [here](https://aistudio.google.com/usage?timeRange=last-28-days)
 - anthropic (strajbl@gmail.com) [here](https://console.anthropic.com/usage?date=2025-10)
 - openrouter (strajbl@gmail.com) [here](https://openrouter.ai/activity)
+- xai (xkqqkx) [here](https://console.x.ai/team/4511e152-b685-48f2-8a6e-8d980e0fa6c8)
+- deepseek (xkqqkx) [here](https://platform.deepseek.com/api_keys)
 
 Gemini has free tier for Gemini 2.5 Pro (very slow) and Gemini 2.5 Flash models. For Anthropic I used Haiku 4.5 with prepaid credits.
 
