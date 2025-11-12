@@ -146,4 +146,21 @@ This dynamically checks if a range is provided and passes it to conform.nvim. Wo
 ## 2025-11-08 MCPHub
 
 testing MCP hub pluging which can be used as an extension in codecompanion (see ns1 config)
-See this [discussion](https://github.com/ravitemer/mcphub.nvim/discussions/145) for install. I used the yaml suggested by betaboon, then changed the `web_dashboard: false` and `web_dashboard_open_on_launch: false`, and restarted MCP hub.
+See this [discussion](https://github.com/ravitemer/mcphub.nvim/discussions/145) for install. I used the yaml suggested by betaboon (see below), then changed the `web_dashboard: false` and `web_dashboard_open_on_launch: false`, 
+in `~/.serena/serena_config.yml` and restarted MCP hub.
+
+```
+{
+  "github.com/oraios/serena": {
+    "args": [
+      "--from",
+      "git+https://github.com/oraios/serena",
+      "serena-mcp-server"
+    ],
+    "disabled": false,
+    "command": "uvx"
+  }
+}
+```
+
+
