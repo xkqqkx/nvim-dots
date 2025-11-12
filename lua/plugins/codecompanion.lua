@@ -106,15 +106,6 @@ return {
                             env = {
                                 api_key = 'DEEPSEEK_API_KEY',
                             },
-                            schema = {
-                                model = {
-                                    default = 'deepseek-chat',
-                                    choices = {
-                                        'deepseek-chat',
-                                        'deepseek-reasoner',
-                                    },
-                                },
-                            },
                         })
                     end,
                     -- minimax_m2 = function()
