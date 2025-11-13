@@ -46,7 +46,12 @@ return {
 
                     return sources
                 end,
+
                 -- (m.s.) lazydev provider copied from lazydev doc in github
+                -- It creates LSP (Language Server Protocol) definitions for
+                -- Neovim's Lua API, external plugins, and other Lua modules.
+                -- This helps your Lua language server (like `lua_ls`)
+                -- provide accurate diagnostics, go-to-definition, hover documentation.
                 providers = {
                     lazydev = {
                         name = "LazyDev",
