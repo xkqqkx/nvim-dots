@@ -60,21 +60,16 @@ return {
                             -- },
                             schema = {
                                 model = {
-                                    default = 'minimax/minimax-m2:free',
+                                    default = 'openai/gpt-oss-20b:free',
                                     -- some of the free models require settigs in privacy (e.g. allow logging of prompts)
                                     choices = {
-                                        ['minimax/minimax-m2:free'] = {
-                                            formatted_name = 'minimax M2',
-                                            opts = { can_reason = true },
-                                        },
+                                        -- ['minimax/minimax-m2:free'] = {
+                                        --     formatted_name = 'minimax M2',
+                                        --     opts = { can_reason = true },
+                                        -- },
+                                        'openai/gpt-oss-20b:free',
                                         'qwen/qwen3-235b-a22b:free',
                                         'qwen/qwen3-coder:free',
-                                        'deepseek/deepseek-chat-v3.1:free', -- provider uses data for training
-                                        -- "deepseek/deepseek-chat", -- paid model
-                                        -- "x-ai/grok-code-fast-1", -- paid model
-                                        -- "x-ai/grok-4-fast",
-                                        -- "x-ai/grok-4",
-                                        -- "nousresearch/hermes-3-llama-3.1-405b:free,"
                                     },
                                 },
                             },
@@ -93,7 +88,7 @@ return {
                                     choices = {
                                         'grok-code-fast-1',
                                         'grok-4-fast-reasoning',
-                                        'groi-4-fast-non-reasoning',
+                                        'grok-4-fast-non-reasoning',
                                     },
                                 },
                             },
@@ -108,35 +103,6 @@ return {
                             },
                         })
                     end,
-                    -- minimax_m2 = function()
-                    --     return require('codecompanion.adapters').extend('openai', {
-                    --         name = 'minimax_m2',
-                    --         url = 'https://openrouter.ai/api/v1/chat/completions',
-                    --         env = {
-                    --             api_key = 'OPENROUTER_API_KEY',
-                    --         },
-                    --         schema = {
-                    --             model = {
-                    --                 default = 'minimax/minimax-m2:free',
-                    --             },
-                    --             -- critical: preserve reasoning content
-                    --             -- openrouter automatically handles <think> blocks
-                    --         },
-                    --         handlers = {
-                    --             -- custom handler to ensure reasoning is preserved
-                    --             on_stdout = function(self, data)
-                    --                 -- default handler - preserves all content including <think> tags
-                    --                 if data and data.choices and data.choices[1] then
-                    --                     local content = data.choices[1].message.content
-                    --                     -- do not strip <think>...</think> tags
-                    --                     -- keep them intact for next turn
-                    --                     return content
-                    --                 end
-                    --             end,
-                    --         },
-                    --     })
-                    -- end,
-                    --
                     opts = {
                         timeout = 40000,
                         show_model_choices = true,
