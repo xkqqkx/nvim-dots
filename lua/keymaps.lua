@@ -8,9 +8,7 @@ vim.keymap.set('n', '<C-u>', '<C-u>zz', { desc = 'Scroll upwards' })
 vim.keymap.set('n', 'n', 'nzzzv', { desc = 'Next result' })
 vim.keymap.set('n', 'N', 'Nzzzv', { desc = 'Previous result' })
 
--- Indent while remaining in visual mode.
-vim.keymap.set('v', '<', '<gv')
-vim.keymap.set('v', '>', '>gv')
+
 
 -- Formatting.
 vim.keymap.set('n', 'gQ', 'mzgggqG`z<cmd>delmarks z<cr>zz', { desc = 'Format buffer' })
@@ -44,6 +42,14 @@ end, { desc = 'Escape, clear hlsearch, and stop snippet session', expr = true })
 
 -- Make U opposite to u.
 vim.keymap.set('n', 'U', '<C-r>', { desc = 'Redo' })
+
+-- Indent while remaining in visual mode.
+vim.keymap.set('v', '<', '<gv')
+vim.keymap.set('v', '>', '>gv')
+
+-- Indent current line in normal mode.
+vim.keymap.set('n', '>>', '>>', { desc = 'Indent current line' })
+vim.keymap.set('n', '<<', '<<', { desc = 'Dedent current line' })
 
 -- Escape and save changes.
 vim.keymap.set({ 's', 'i', 'n', 'v' }, '<C-s>', '<esc>:w<cr>', { desc = 'Exit insert mode and save changes.' })
