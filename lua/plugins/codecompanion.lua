@@ -7,7 +7,11 @@ return {
     {
         'olimorris/codecompanion.nvim',
         cmd = 'CodeCompanion',
-        dependencies = { 'nvim-lua/plenary.nvim' },
+        dependencies = {
+            'nvim-lua/plenary.nvim',
+            'j-hui/fidget.nvim',
+            'ravitemer/codecompanion-history.nvim', -- save/summarize/load chats
+        },
 
         keys = {
             { '<leader>at', '<cmd>CodeCompanionChat Toggle<cr>', desc = 'Toggle CodeCompanion chat' },
@@ -17,6 +21,18 @@ return {
         opts = {
             log_level = 'DEBUG',
             adapters = {
+                acp = {
+                    gemini_cli = function()
+                        return require('codecompanion.adapters').extend('gemini_cli', {
+                            env = {
+                                api_key = 'GEMINI_API_KEY',
+                            },
+                            defaults = {
+                                auth_method = 'gemini-api-key',
+                            },
+                        })
+                    end,
+                },
                 http = {
                     anthropic = function()
                         return require('codecompanion.adapters').extend('anthropic', {
@@ -142,6 +158,28 @@ return {
                 },
             },
             extensions = {
+                -- see here https://github.com/ravitemer/codecompanion-history.nvim for recognized options
+                history = {
+                    enabled = true,
+                    opts = {
+                        auto_generate_titles = true,
+                        title_generation_opts = {
+                            adapter = 'gemini',
+                            model = 'gemini-2.5-flash',
+                        },
+                        summary = {
+                            generation_opts = {
+                                adapter = 'gemini',
+                                model = 'gemini-2.5-flash',
+                                context_size = 90000, -- max tokens that the model supports
+                                include_references = true, -- include slash command content
+                                include_tool_outputs = true, -- include tool execution results
+                                system_prompt = nil, -- custom system prompt (string or function)
+                                format_summary = nil, -- custom function to format generated summary e.g to remove <think/> tags from summary
+                            },
+                        },
+                    },
+                },
                 mcphub = {
                     callback = 'mcphub.extensions.codecompanion',
                     opts = {
@@ -158,7 +196,21 @@ return {
                     },
                 },
             },
+            memory = {
+                opts = {
+                    -- add memory to chat buffer. By default AGENT.md or AGENTS.md files
+                    -- are recognized as memory files.
+                    chat = {
+                        enabled = true,
+                    },
+                },
+            },
         },
+
+        init = function()
+            require('plugins.custom.spinner'):init()
+        end,
+
         config = function(_, opts)
             require('codecompanion').setup(opts)
             require('codecompanion_modes').setup()
