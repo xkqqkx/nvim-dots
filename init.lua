@@ -3,9 +3,6 @@ vim.g.projects_dir = vim.env.HOME .. '/Code'
 vim.g.personal_projects_dir = vim.g.projects_dir .. '/Personal'
 vim.g.work_projects_dir = '/Volumes/git'
 
--- Set my colorscheme.
-vim.cmd.colorscheme 'miss-dracula'
-
 -- Install Lazy.
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 if not vim.uv.fs_stat(lazypath) then
@@ -59,3 +56,6 @@ require('lazy').setup(plugins, {
         },
     },
 })
+
+-- set the color scheme
+vim.cmd.colorscheme('newpaper')
