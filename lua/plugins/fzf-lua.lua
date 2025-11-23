@@ -30,13 +30,12 @@ return {
             {
                 '<leader>fn',
                 function()
-                require('fzf-lua').files { cwd = vim.fn.stdpath 'config' }
+                    require('fzf-lua').files { cwd = vim.fn.stdpath 'config' }
                 end,
                 desc = 'Neovim files',
             },
 
             { '<leader>fp', '<cmd>FzfLua git_files<cr>', desc = 'Git files' },
-
 
             {
                 '<leader>fr',
