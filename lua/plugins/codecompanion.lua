@@ -92,7 +92,7 @@ return {
                                     choices = {
                                         'grok-code-fast-1',
                                         'grok-4-fast-reasoning',
-                                        'groi-4-fast-non-reasoning',
+                                        'grok-4-fast-non-reasoning',
                                     },
                                 },
                             },
