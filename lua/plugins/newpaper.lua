@@ -7,8 +7,8 @@ return {
             preset = {
                 by_filetype = {
                     text = {},
-                    task = {'scratch'},
-                    view = {'markdown'},
+                    task = {'scratch'}, -- yellow background
+                    view = {},  -- for documents that do not need line numbers
                 },
                 by_filename = {
                     text = {},
