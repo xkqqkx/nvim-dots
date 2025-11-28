@@ -8,12 +8,12 @@ return {
         event = { 'BufReadPre', 'BufNewFile' },
         opts = {
             signs = {
-                add = { text = solid_bar },
-                untracked = { text = solid_bar },
-                change = { text = solid_bar },
-                delete = { text = solid_bar },
-                topdelete = { text = solid_bar },
-                changedelete = { text = solid_bar },
+                add = { text = '✚' },
+                untracked = { text = '✚' },
+                change = { text = '✚' },
+                delete = { text = '✚' },
+                topdelete = { text = '✚' },
+                changedelete = { text = '✚' },
             },
             signs_staged = {
                 add = { text = dashed_bar },
