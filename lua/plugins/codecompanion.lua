@@ -3,6 +3,8 @@
 -- Features: chat interface, inline suggestions, and agent capabilities
 -- Keybindings: <leader>at (toggle chat), <leader>aa (add to chat), <leader>ay/an (accept/reject inline changes)
 -- See the plugin files in ~/.local/share/nvim/lazy/codecompanion.nvim/lua/
+--
+-- 2025-11-30 commented out model choices in custom adapters (they are not shown anymore for some reason)
 return {
     {
         'olimorris/codecompanion.nvim',
@@ -34,6 +36,10 @@ return {
                     end,
                 },
                 http = {
+                    opts = {
+                        timeout = 40000,
+                        show_model_choices = true,
+                    },
                     anthropic = function()
                         return require('codecompanion.adapters').extend('anthropic', {
                             env = {
@@ -48,24 +54,35 @@ return {
                     end,
                     gemini = function()
                         return require('codecompanion.adapters').extend('gemini', {
-                            name = 'gemini',
                             env = {
                                 api_key = 'GEMINI_API_KEY',
                             },
                             schema = {
                                 model = {
                                     default = 'gemini-2.5-flash',
-                                    choices = {
-                                        'gemini-2.5-flash',
-                                        'gemini-2.5-pro',
-                                    },
+                                },
+                            },
+                        })
+                    end,
+                    gemini_bjd = function()
+                        return require('codecompanion.adapters').extend('gemini', {
+                            env = {
+                                api_key = 'GENAI_API_KEY',
+                            },
+                            schema = {
+                                model = {
+                                    default = 'gemini-3-pro-preview',
+                                    -- choices = {
+                                    --     'gemini-2.5-flash',
+                                    --     'gemini-2.5-pro',
+                                    --     'gemini-3-pro-preview',
+                                    -- },
                                 },
                             },
                         })
                     end,
                     openrouter = function()
                         return require('codecompanion.adapters').extend('openai', {
-                            name = 'openrouter',
                             url = 'https://openrouter.ai/api/v1/chat/completions',
                             env = {
                                 api_key = 'OPENROUTER_API_KEY',
@@ -94,7 +111,6 @@ return {
 
                     xai = function()
                         return require('codecompanion.adapters').extend('xai', {
-                            name = 'xai',
                             env = {
                                 api_key = 'XAI_API_KEY',
                             },
@@ -113,16 +129,11 @@ return {
 
                     deepseek = function()
                         return require('codecompanion.adapters').extend('deepseek', {
-                            name = 'deepseek',
                             env = {
                                 api_key = 'DEEPSEEK_API_KEY',
                             },
                         })
                     end,
-                    opts = {
-                        timeout = 40000,
-                        show_model_choices = true,
-                    },
                 },
             },
             strategies = {

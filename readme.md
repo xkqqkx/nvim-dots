@@ -185,3 +185,34 @@ See this [discussion](https://github.com/olimorris/codecompanion.nvim/discussion
 ## CC memories
 
 see [memories guide](https://codecompanion.olimorris.dev/usage/chat-buffer/memory), especially check the link to `config.lua` file
+
+## 2025-11-30
+
+### Note on `extend adatpor`
+The `extend` function performs a **deep merge**. This means your new choices will be added to (or update) the existing choices defined in the base `gemini` adapter. You will still see the original models (like `gemini-1.5-pro`) in the list.
+
+If you want to **strictly limit** the choices to *only* the two you defined, you should modify the adapter object after creating it, instead of passing it to `extend`:
+
+```lua
+                    gemini = function()
+                        local adapter = require('codecompanion.adapters').extend('gemini', {
+                            name = 'gemini_ms',
+                            env = {
+                                api_key = 'GEMINI_API_KEY',
+                            },
+                            schema = {
+                                model = {
+                                    default = 'gemini-2.5-flash',
+                                },
+                            },
+                        })
+
+                        -- Overwrite choices completely to remove defaults
+                        adapter.schema.model.choices = {
+                            ["gemini-2.5-flash"] = { opts = { can_reason = true, has_vision = true } },
+                            ["gemini-2.5-pro"] = { opts = { can_reason = true, has_vision = true } },
+                        }
+
+                        return adapter
+                    end,
+```
