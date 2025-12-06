@@ -42,13 +42,13 @@ vim.api.nvim_create_autocmd('VimEnter', {
     end,
 })
 
-vim.api.nvim_create_autocmd('CmdwinEnter', {
-    group = vim.api.nvim_create_augroup('mariasolos/execute_cmd_and_stay', { clear = true }),
-    desc = 'Execute command and stay in the command-line window',
-    callback = function(args)
-        vim.keymap.set({ 'n', 'i' }, '<S-CR>', '<cr>q:', { buffer = args.buf })
-    end,
-})
+-- vim.api.nvim_create_autocmd('CmdwinEnter', {
+--     group = vim.api.nvim_create_augroup('mariasolos/execute_cmd_and_stay', { clear = true }),
+--     desc = 'Execute command and stay in the command-line window',
+--     callback = function(args)
+--         vim.keymap.set({ 'n', 'i' }, '<S-CR>', '<cr>q:', { buffer = args.buf })
+--     end,
+-- })
 
 vim.api.nvim_create_autocmd('BufReadPost', {
     group = vim.api.nvim_create_augroup('mariasolos/last_location', { clear = true }),
@@ -124,4 +124,16 @@ vim.api.nvim_create_autocmd('TextYankPost', {
         -- Setting a priority higher than the LSP references one.
         vim.hl.on_yank { higroup = 'Visual', priority = 250 }
     end,
+})
+
+
+-- use <F3> to toggle markdown rendering, the keymap is defined only for markdown buffer
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'markdown',
+  callback = function()
+    -- Create a buffer-local keymap for Markdown files
+    vim.keymap.set('n', '<F3>', function()
+      vim.cmd('RenderMarkdown buf_toggle')
+    end, { noremap = true, silent = true, buffer = true }) -- `buffer = true` makes it local to the current buffer
+  end,
 })
