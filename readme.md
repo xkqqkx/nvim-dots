@@ -27,6 +27,21 @@ Learning Neovim Lua involves understanding both the Lua language itself and how 
         *   `nvim_` functions: These are the lower-level API calls, often wrapped by higher-level `vim.` functions for convenience.
         *   Callbacks: Many Neovim functions accept Lua functions as arguments.
 
+I tried various REPLs:
+- [replua.nvim](https://github.com/mghaight/replua.nvim), 
+  - `:RepluaOpen` or `:RepluaOpen!`, `:RepluaReset` - resets local env, `:RepluaEval` - evaluate the entire scratch buffer
+  - `<leader>r` eval entire buffer
+  - `<leader>e` eval line
+  - `<leader><CR>` eval current block
+- [nvim-luadev](https://github.com/bfredl/nvim-luadev) opens a scratch window that shows output from executing lua code
+  - `:Luadev`
+  - not sure how this works, probably more suitable when actually working on lua code in other buffer
+
+Currently using [lua-console.nvim](https://github.com/YaroSpace/lua-console.nvim)
+- open with "`<CR>"
+- `<leader>r` eval entire buffer
+- `<CR>` eval line or selection
+
 ## Notes and troubleshooting
 
 - Wrong characters are showing in ssh terminal
