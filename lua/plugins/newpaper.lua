@@ -17,5 +17,7 @@ return {
                 },
             },
         }
+        -- Set the colorscheme immediately after newpaper is configured
+        vim.cmd.colorscheme('newpaper')
     end,
 }

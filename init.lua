@@ -57,5 +57,3 @@ require('lazy').setup(plugins, {
     },
 })
 
--- set the color scheme
-vim.cmd.colorscheme('newpaper')
