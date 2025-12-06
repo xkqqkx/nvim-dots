@@ -50,8 +50,9 @@ vim.opt.fillchars = {
 -- Use rounded borders for floating windows.
 vim.o.winborder = 'rounded'
 
--- Sync clipboard between the OS and Neovim.
-vim.o.clipboard = 'unnamedplus'
+-- Sync clipboard between the OS and Neovim: set to 'unnamedplus'
+-- this does not really work when running in remote terminal, so leaving it empty
+vim.o.clipboard = ''
 
 -- Save undo history.
 vim.o.undofile = true
