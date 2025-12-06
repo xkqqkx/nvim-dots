@@ -129,7 +129,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 
 -- use <F3> to toggle markdown rendering, the keymap is defined only for markdown buffer
 vim.api.nvim_create_autocmd('FileType', {
-  pattern = 'markdown',
+  pattern = {'markdown', 'codecompanion'},
   callback = function()
     -- Create a buffer-local keymap for Markdown files
     vim.keymap.set('n', '<F3>', function()

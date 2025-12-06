@@ -7,9 +7,19 @@ return {
         -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
         ---@module 'render-markdown'
         ---@type render.md.UserConfig
-        opts = {},
+        opts = {
+            file_types = { 'markdown', 'codecompanion' },
+        },
     },
 
     -- markdown preview using Glow
-    { 'ellisonleao/glow.nvim', config = true, widht=120, width_ratio = 0.9, style = 'light', border = 'single', cmd = 'Glow' },
+    {
+        'ellisonleao/glow.nvim',
+        config = true,
+        widht = 120,
+        width_ratio = 0.9,
+        style = 'light',
+        border = 'single',
+        cmd = 'Glow',
+    },
 }
