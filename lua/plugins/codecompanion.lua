@@ -218,6 +218,7 @@ return {
             },
         },
 
+
         init = function()
             require('plugins.custom.spinner'):init()
         end,
@@ -225,6 +226,9 @@ return {
         config = function(_, opts)
             require('codecompanion').setup(opts)
             require('codecompanion_modes').setup()
+
+            -- define cc shortcut for CodeCompanion command
+            vim.cmd([[cab cc CodeCompanion]])
         end,
     },
 }
