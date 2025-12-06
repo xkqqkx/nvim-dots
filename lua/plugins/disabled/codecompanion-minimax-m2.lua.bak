@@ -1,0 +1,232 @@
+-- ~/.config/nvim/lua/plugins/codecompanion.lua
+-- Or add to your existing plugin configuration
+local M = {
+    'olimorris/codecompanion.nvim',
+    cmd = 'CodeCompanion',
+    dependencies = {
+        'nvim-lua/plenary.nvim',
+        'nvim-treesitter/nvim-treesitter',
+    },
+}
+
+function M.config()
+    -- Storage for reasoning between turns
+    local reasoning_store = {}
+    print 'running minmax config'
+
+    require('codecompanion').setup {
+        strategies = {
+            chat = {
+                adapter = 'minimax_m2_think',
+            },
+            inline = {
+                adapter = 'minimax_m2_think',
+            },
+        },
+
+        opts = {
+            log_level = 'DEBUG',
+            adapters = {
+                http = {
+                    minimax_m2_think = function()
+                        print 'from adoptor func'
+                        return require('codecompanion.adapters').extend('openai', {
+                            name = 'minimax_m2_think',
+                            -- url = 'https://api.minimax.chat/v1/text/chatcompletion_v2',
+                            url = 'https://openrouter.ai/api/v1/chat/completions',
+                            env = {
+                                api_key = 'OPENROUTER_API_KEY',
+                            },
+                            -- headers = { ['Content-Type'] = 'application/json', },
+                            parameters = {
+                                stream = true,
+                            },
+
+                            schema = {
+                                model = {
+                                    default = 'minimax/minimax-m2:free',
+                                    choices = {
+                                        'minimax/minimax-m2:free',
+                                    },
+                                },
+                                temperature = {
+                                    default = 0.7,
+                                    min = 0,
+                                    max = 1,
+                                },
+                                max_tokens = {
+                                    default = 4096,
+                                },
+                            },
+
+                            -- Custom handlers for reasoning preservation
+                            handlers = {
+                                -- Intercept the request to add previous reasoning context
+                                on_request = function(adapter, payload, context)
+                                    local chat_id = context.bufnr or 'default'
+
+                                    -- If we have stored reasoning for this chat, add it to system message
+                                    if reasoning_store[chat_id] and #reasoning_store[chat_id] > 0 then
+                                        -- Find or create system message
+                                        local system_msg_idx = nil
+                                        for i, msg in ipairs(payload.messages) do
+                                            if msg.role == 'system' then
+                                                system_msg_idx = i
+                                                break
+                                            end
+                                        end
+
+                                        -- Build reasoning context
+                                        local reasoning_context = '\n\n=== Previous Reasoning Chain ===\n'
+                                        for i, reasoning_entry in ipairs(reasoning_store[chat_id]) do
+                                            reasoning_context = reasoning_context
+                                                .. string.format('Turn %d reasoning: %s\n', i, reasoning_entry)
+                                        end
+                                        reasoning_context = reasoning_context .. '=== End Reasoning Chain ===\n'
+
+                                        if system_msg_idx then
+                                            -- Append to existing system message
+                                            payload.messages[system_msg_idx].content = payload.messages[system_msg_idx].content
+                                                .. reasoning_context
+                                        else
+                                            -- Insert new system message with reasoning
+                                            table.insert(payload.messages, 1, {
+                                                role = 'system',
+                                                content = 'You are a helpful coding assistant.' .. reasoning_context,
+                                            })
+                                        end
+                                    end
+
+                                    return payload
+                                end,
+
+                                -- Intercept the response to extract and store reasoning
+                                on_response = function(adapter, response, context)
+                                    local chat_id = context.bufnr or 'default'
+
+                                    -- Initialize storage for this chat if needed
+                                    if not reasoning_store[chat_id] then
+                                        reasoning_store[chat_id] = {}
+                                    end
+
+                                    -- Extract reasoning if present
+                                    if response.choices and response.choices[1] then
+                                        local choice = response.choices[1]
+
+                                        -- MiniMax M2 may return reasoning_content field
+                                        local reasoning = choice.message and choice.message.reasoning_content
+
+                                        if reasoning and reasoning ~= '' then
+                                            -- Store this turn's reasoning
+                                            table.insert(reasoning_store[chat_id], reasoning)
+
+                                            -- Keep only last 5 turns to avoid context overflow
+                                            if #reasoning_store[chat_id] > 5 then
+                                                table.remove(reasoning_store[chat_id], 1)
+                                            end
+
+                                            -- Optionally display reasoning in a comment or separate buffer
+                                            vim.notify(
+                                                'M2 Reasoning captured (Turn ' .. #reasoning_store[chat_id] .. ')',
+                                                vim.log.levels.INFO
+                                            )
+                                        end
+                                    end
+
+                                    return response
+                                end,
+                            },
+
+                            -- Custom callback for streaming responses
+                            callbacks = {
+                                form_parameters = function(params, messages)
+                                    return {
+                                        model = params.model,
+                                        messages = messages,
+                                        temperature = params.temperature,
+                                        max_tokens = params.max_tokens,
+                                        stream = params.stream,
+                                    }
+                                end,
+
+                                form_messages = function(messages)
+                                    -- Ensure messages are in the correct format
+                                    local formatted = {}
+                                    for _, msg in ipairs(messages) do
+                                        table.insert(formatted, {
+                                            role = msg.role,
+                                            content = msg.content,
+                                        })
+                                    end
+                                    return formatted
+                                end,
+                            },
+                        })
+                    end,
+                },
+            },
+        },
+
+        -- Optional: Add commands to view/clear reasoning store
+        display = {
+            diff = {
+                provider = 'mini_diff',
+            },
+        },
+    }
+
+    -- Custom command to view stored reasoning
+    vim.api.nvim_create_user_command('CodeCompanionViewReasoning', function()
+        local chat_id = vim.api.nvim_get_current_buf()
+        local reasoning = reasoning_store[chat_id]
+
+        if not reasoning or #reasoning == 0 then
+            vim.notify('No reasoning stored for this chat', vim.log.levels.WARN)
+            return
+        end
+
+        -- Create a floating window to display reasoning
+        local buf = vim.api.nvim_create_buf(false, true)
+        local lines = { '=== Stored Reasoning Chain ===', '' }
+
+        for i, entry in ipairs(reasoning) do
+            table.insert(lines, string.format('Turn %d:', i))
+            table.insert(lines, entry)
+            table.insert(lines, '')
+        end
+
+        vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
+
+        local width = math.floor(vim.o.columns * 0.8)
+        local height = math.floor(vim.o.lines * 0.8)
+        local opts = {
+            relative = 'editor',
+            width = width,
+            height = height,
+            col = math.floor((vim.o.columns - width) / 2),
+            row = math.floor((vim.o.lines - height) / 2),
+            style = 'minimal',
+            border = 'rounded',
+            title = ' M2 Reasoning Chain ',
+            title_pos = 'center',
+        }
+
+        vim.api.nvim_open_win(buf, true, opts)
+        vim.api.nvim_buf_set_option(buf, 'modifiable', false)
+        vim.api.nvim_buf_set_keymap(buf, 'n', 'q', ':q<CR>', { noremap = true, silent = true })
+    end, {})
+
+    -- Custom command to clear reasoning for current chat
+    vim.api.nvim_create_user_command('CodeCompanionClearReasoning', function()
+        local chat_id = vim.api.nvim_get_current_buf()
+        reasoning_store[chat_id] = {}
+        vim.notify('Reasoning cleared for this chat', vim.log.levels.INFO)
+    end, {})
+
+    -- Optional keybindings
+    vim.keymap.set('n', '<leader>cc', '<cmd>CodeCompanionChat<cr>', { desc = 'CodeCompanion Chat' })
+    vim.keymap.set('v', '<leader>cc', '<cmd>CodeCompanionChat<cr>', { desc = 'CodeCompanion Chat' })
+    vim.keymap.set('n', '<leader>cr', '<cmd>CodeCompanionViewReasoning<cr>', { desc = 'View M2 Reasoning' })
+    vim.keymap.set('n', '<leader>cR', '<cmd>CodeCompanionClearReasoning<cr>', { desc = 'Clear M2 Reasoning' })
+end
+return M
