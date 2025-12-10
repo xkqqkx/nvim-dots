@@ -1,6 +1,9 @@
 Based on [MariaSolOs nvim dotfiles](https://github.com/MariaSolOs/dotfiles/tree/main/.config/nvim).
 Requires nvim v0.11 or higher. Binary releases for older architectures can be found [here](https://github.com/neovim/neovim-releases/releases).
 
+Another source of inspiration:
+- config of [pkazmier](https://github.com/pkazmier/nvim/tree/main)
+- config of [olimorris](https://github.com/olimorris/dotfiles/tree/main/.config/nvim-new)
 
 ## Resources
 
