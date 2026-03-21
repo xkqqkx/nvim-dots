@@ -179,7 +179,7 @@ vim.diagnostic.config {
             return prefix, 'Diagnostic' .. level:gsub('^%l', string.upper)
         end,
     },
-    -- Disable signs in the gutter.
+    -- Disable/enable signs in the gutter.
     signs = false,
 }
 

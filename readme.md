@@ -45,6 +45,13 @@ Currently using [lua-console.nvim](https://github.com/YaroSpace/lua-console.nvim
 - `<leader>r` eval entire buffer
 - `<CR>` eval line or selection
 
+### Fonts
+Use [prog fonts website](https://www.programmingfonts.org/#paper) to preview fonts and color schemes.
+
+- [input](https://input.djr.com/) - can be customized
+- [iosevka](https://typeof.net/Iosevka/customizer) - can be customized
+- [Paper](https://github.com/paper-design/paper-mono) - nice font
+
 ## Notes and troubleshooting
 
 - Wrong characters are showing in ssh terminal
@@ -234,3 +241,7 @@ If you want to **strictly limit** the choices to *only* the two you defined, you
                         return adapter
                     end,
 ```
+
+## 2025-12-14 copilot setup
+
+Copilot plugin fails because it requires username/passwd. Try to follow [this guide](https://github.com/zbirenbaum/copilot.lua/issues/479) but did not help. It seems like github issue because also regular git checkout of the plugin's source code has the error.

@@ -32,13 +32,64 @@ return {
         opts = {
             mappings = {
                 -- <S-CR> does not work for me, let's remap
-                eval_buffer = "<leader>r",
+                eval_buffer = '<leader>r',
             },
             buffer = {
                 load_on_start = false,
                 clear_before_eval = true, -- clear output before eval on the whole buffer
-            }
-
+            },
         },
     },
+
+    {
+        -- command :TinyInlineDiag (toggle, disable, enable)
+        'rachartier/tiny-inline-diagnostic.nvim',
+        event = 'VeryLazy',
+        priority = 1000,
+        config = function()
+            require('tiny-inline-diagnostic').setup()
+            vim.diagnostic.config { virtual_text = false } -- Disable Neovim's default virtual text diagnostics
+        end,
+    },
+
+    -- Copilot
+    {
+        'zbirenbaum/copilot.lua',
+        event = 'InsertEnter',
+        opts = {
+            suggestion = {
+                enabled = true,
+                auto_trigger = true,
+                keymap = {
+                    accept = '<M-.>',
+                    accept_word = '<M-w>',
+                    accept_line = '<M-l>',
+                    next = '<M-]>',
+                    prev = '<M-[>',
+                    -- dismiss = '<C-/>',
+                },
+            },
+            panel = {
+                enabled = true,
+            },
+            filetypes = {
+                markdown = true,
+                yaml = true,
+            },
+        },
+        config = function(_, opts)
+            require('copilot').setup(opts)
+        end,
+    },
+
+    --  Opencode
+    {
+        'NickvanDyke/opencode.nvim',
+        config = function()
+            vim.g.opencode_opts = {
+                -- port = '50000',
+            }
+            vim.o.autoread = true
+        end,
+    }
 }

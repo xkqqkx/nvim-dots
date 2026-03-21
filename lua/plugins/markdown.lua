@@ -16,8 +16,10 @@ return {
     {
         'ellisonleao/glow.nvim',
         config = true,
-        widht = 120,
-        width_ratio = 0.9,
+        width = 120,
+        height = 150,
+        width_ratio = 0.95, -- maximum width of the Glow window compared to the nvim window size (overrides `width`)
+        height_ratio = 0.95,
         style = 'light',
         border = 'single',
         cmd = 'Glow',
