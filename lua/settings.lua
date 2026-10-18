@@ -81,7 +81,8 @@ vim.wo.signcolumn = 'yes'
 -- Update times and timeouts.
 vim.o.updatetime = 300
 vim.o.timeoutlen = 500
-vim.o.ttimeoutlen = 10
+-- Too low a value over SSH splits terminal replies and leaks them as keystrokes.
+vim.o.ttimeoutlen = 100
 
 -- Completion.
 vim.opt.wildignore:append { '.DS_Store' }
