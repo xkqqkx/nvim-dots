@@ -54,6 +54,20 @@ vim.o.winborder = 'rounded'
 -- this does not really work when running in remote terminal, so leaving it empty
 vim.o.clipboard = ''
 
+-- Copy to the terminal via OSC 52, but never wait for a paste response
+-- (most terminals don't answer OSC 52 queries, which makes nvim hang).
+local function paste()
+  return { vim.fn.split(vim.fn.getreg(''), '\n'), vim.fn.getregtype('') }
+end
+vim.g.clipboard = {
+  name = 'OSC 52 (copy only)',
+  copy = {
+    ['+'] = require('vim.ui.clipboard.osc52').copy('+'),
+    ['*'] = require('vim.ui.clipboard.osc52').copy('*'),
+  },
+  paste = { ['+'] = paste, ['*'] = paste },
+}
+
 -- Save undo history.
 vim.o.undofile = true
 
