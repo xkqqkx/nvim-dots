@@ -1,7 +1,76 @@
 -- Highlight, edit, and navigate code.
+local ensure_installed = {
+    'bash',
+    'c',
+    'cpp',
+    'fish',
+    'gitcommit',
+    'graphql',
+    'html',
+    'java',
+    'javascript',
+    'json',
+    'json5',
+    'lua',
+    'markdown',
+    'markdown_inline',
+    'python',
+    'query',
+    'rasi',
+    'regex',
+    'rust',
+    'scss',
+    'toml',
+    'tsx',
+    'typescript',
+    'vim',
+    'vimdoc',
+    'yaml',
+}
+
+-- Treesitter unindents Yaml lists for some reason.
+local indent_disabled_filetypes = { yaml = true }
+
+-- The `main` branch dropped the old incremental_selection module, so it's
+-- reimplemented here on top of the public `vim.treesitter` node API.
+local selection_stacks = {}
+
+local function select_node(node)
+    local srow, scol, erow, ecol = node:range()
+    vim.api.nvim_win_set_cursor(0, { srow + 1, scol })
+    if vim.fn.mode() ~= 'v' then
+        vim.cmd('normal! v')
+    end
+    vim.api.nvim_win_set_cursor(0, { erow + 1, math.max(ecol - 1, scol) })
+end
+
+local function expand_selection()
+    local bufnr = vim.api.nvim_get_current_buf()
+    local stack = selection_stacks[bufnr]
+    local node = stack and stack[#stack]:parent() or vim.treesitter.get_node()
+    if not node then
+        return
+    end
+    stack = stack or {}
+    table.insert(stack, node)
+    selection_stacks[bufnr] = stack
+    select_node(node)
+end
+
+local function shrink_selection()
+    local bufnr = vim.api.nvim_get_current_buf()
+    local stack = selection_stacks[bufnr]
+    if not stack or #stack < 2 then
+        return
+    end
+    table.remove(stack)
+    select_node(stack[#stack])
+end
+
 return {
     {
         'nvim-treesitter/nvim-treesitter',
+        branch = 'main',
         dependencies = {
             {
                 'nvim-treesitter/nvim-treesitter-context',
@@ -33,69 +102,45 @@ return {
                 },
             },
         },
-        version = false,
+        lazy = false,
         build = ':TSUpdate',
-        opts = {
-            ensure_installed = {
-                'bash',
-                'c',
-                'cpp',
-                'fish',
-                'gitcommit',
-                'graphql',
-                'html',
-                'java',
-                'javascript',
-                'json',
-                'json5',
-                'jsonc',
-                'lua',
-                'markdown',
-                'markdown_inline',
-                'python',
-                'query',
-                'rasi',
-                'regex',
-                'rust',
-                'scss',
-                'toml',
-                'tsx',
-                'typescript',
-                'vim',
-                'vimdoc',
-                'yaml',
-            },
-            highlight = { enable = true },
-            incremental_selection = {
-                enable = true,
-                keymaps = {
-                    init_selection = '<cr>',
-                    node_incremental = '<cr>',
-                    scope_incremental = false,
-                    node_decremental = '<bs>',
-                },
-            },
-            indent = {
-                enable = true,
-                -- Treesitter unindents Yaml lists for some reason.
-                disable = { 'yaml' },
-            },
-        },
-        config = function(_, opts)
-            local toggle_inc_selection_group =
-                vim.api.nvim_create_augroup('mariasolos/toggle_inc_selection', { clear = true })
-            vim.api.nvim_create_autocmd('CmdwinEnter', {
-                desc = 'Disable incremental selection when entering the cmdline window',
-                group = toggle_inc_selection_group,
-                command = 'TSBufDisable incremental_selection',
-            })
-            vim.api.nvim_create_autocmd('CmdwinLeave', {
-                desc = 'Enable incremental selection when leaving the cmdline window',
-                group = toggle_inc_selection_group,
-                command = 'TSBufEnable incremental_selection',
+        config = function()
+            require('nvim-treesitter').install(ensure_installed)
+
+            local group = vim.api.nvim_create_augroup('mariasolos/treesitter', { clear = true })
+            vim.api.nvim_create_autocmd('FileType', {
+                group = group,
+                callback = function(event)
+                    if not pcall(vim.treesitter.start) then
+                        return
+                    end
+
+                    vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+
+                    if not indent_disabled_filetypes[event.match] then
+                        vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+                    end
+
+                    local map_opts = { buffer = event.buf }
+                    vim.keymap.set('n', '<cr>', expand_selection, vim.tbl_extend('force', map_opts, {
+                        desc = 'Init incremental selection',
+                    }))
+                    vim.keymap.set('x', '<cr>', expand_selection, vim.tbl_extend('force', map_opts, {
+                        desc = 'Increment selection',
+                    }))
+                    vim.keymap.set('x', '<bs>', shrink_selection, vim.tbl_extend('force', map_opts, {
+                        desc = 'Decrement selection',
+                    }))
+                end,
             })
 
-            require('nvim-treesitter.configs').setup(opts)
+            vim.api.nvim_create_autocmd({ 'InsertEnter', 'BufLeave' }, {
+                group = group,
+                desc = 'Reset incremental selection',
+                callback = function()
+                    selection_stacks[vim.api.nvim_get_current_buf()] = nil
+                end,
+            })
         end,
     },
 }

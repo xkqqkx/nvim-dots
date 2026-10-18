@@ -138,6 +138,7 @@ return {
                                         'grok-code-fast-1',
                                         'grok-4-fast-reasoning',
                                         'grok-4-fast-non-reasoning',
+                                        'grok-4.5',
                                     },
                                 },
                             },
@@ -197,13 +198,13 @@ return {
                     opts = {
                         auto_generate_titles = true,
                         title_generation_opts = {
-                            adapter = 'gemini',
-                            model = 'gemini-2.5-flash',
+                            adapter = 'copilot',
+                            model = 'gpt-5-mini',
                         },
                         summary = {
                             generation_opts = {
                                 adapter = 'gemini',
-                                model = 'gemini-2.5-flash',
+                                model = 'gemini-3-flash-preview',
                                 context_size = 90000, -- max tokens that the model supports
                                 include_references = true, -- include slash command content
                                 include_tool_outputs = true, -- include tool execution results
@@ -232,7 +233,7 @@ return {
             rules = {
                 opts = {
                     -- add memory to chat buffer. By default AGENT.md or AGENTS.md files
-                    -- are recognized as memory files.
+                    -- are recognized as memory files. t
                     chat = {
                         enabled = true,
                     },
