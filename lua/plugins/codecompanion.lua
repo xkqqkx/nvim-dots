@@ -47,6 +47,15 @@ return {
                         timeout = 40000,
                         show_model_choices = true,
                     },
+                    copilot = function()
+                        return require('codecompanion.adapters').extend('copilot', {
+                            schema = {
+                                model = {
+                                    default = 'claude-haiku-5.5',
+                                },
+                            },
+                        })
+                    end,
                     anthropic = function()
                         return require('codecompanion.adapters').extend('anthropic', {
                             env = {
@@ -54,7 +63,7 @@ return {
                             },
                             schema = {
                                 model = {
-                                    default = 'claude-haiku-4-5-20251001',
+                                    default = 'claude-haiku-5-5',
                                 },
                             },
                         })
