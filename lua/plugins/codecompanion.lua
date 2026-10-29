@@ -12,7 +12,6 @@ return {
         dependencies = {
             'nvim-lua/plenary.nvim',
             'j-hui/fidget.nvim',
-            'ravitemer/codecompanion-history.nvim', -- save/summarize/load chats
         },
 
         keys = {
@@ -48,15 +47,6 @@ return {
                         timeout = 40000,
                         show_model_choices = true,
                     },
-                    copilot = function()
-                        return require('codecompanion.adapters').extend('copilot', {
-                            schema = {
-                                model = {
-                                    default = 'gpt-5-mini',
-                                },
-                            },
-                        })
-                    end,
                     anthropic = function()
                         return require('codecompanion.adapters').extend('anthropic', {
                             env = {
@@ -89,38 +79,23 @@ return {
                             schema = {
                                 model = {
                                     default = 'gemini-3-flash-preview',
-                                    -- choices = {
-                                    --     'gemini-2.5-flash',
-                                    --     'gemini-2.5-pro',
-                                    --     'gemini-3-pro-preview',
-                                    -- },
+                                    choices = {
+                                        ['gemini-3.8-flash'] = {
+                                            formatted_name = 'Gemini 3.8 Flash',
+                                            meta = { context_window = 1048576 },
+                                            opts = { can_form_structured_outputs = true, can_reason = true, has_vision = true },
+                                        },
+                                    },
                                 },
                             },
                         })
                     end,
                     openrouter = function()
-                        return require('codecompanion.adapters').extend('openai', {
-                            url = 'https://openrouter.ai/api/v1/chat/completions',
-                            env = {
-                                api_key = 'OPENROUTER_API_KEY',
-                            },
-                            -- headers = {
-                            --   ["HTTP-Referer"] = "https://github.com/yourusername", -- Optional
-                            --   ["X-Title"] = "CodeCompanion",  -- Optional
-                            -- },
+                        return require('codecompanion.adapters').extend('openrouter', {
                             schema = {
                                 model = {
+                                    -- some of the free models require settings in privacy (e.g. allow logging of prompts)
                                     default = 'openai/gpt-oss-20b:free',
-                                    -- some of the free models require settigs in privacy (e.g. allow logging of prompts)
-                                    choices = {
-                                        -- ['minimax/minimax-m2:free'] = {
-                                        --     formatted_name = 'minimax M2',
-                                        --     opts = { can_reason = true },
-                                        -- },
-                                        'openai/gpt-oss-20b:free',
-                                        'qwen/qwen3-235b-a22b:free',
-                                        'qwen/qwen3-coder:free',
-                                    },
                                 },
                             },
                         })
@@ -175,6 +150,7 @@ return {
                 },
                 chat = {
                     adapter = 'copilot',
+                    sessions = { autosave = true },
                     keymaps = {
                         clear = {
                             modes = { n = 'gX' },
@@ -192,28 +168,6 @@ return {
                 },
             },
             extensions = {
-                -- see here https://github.com/ravitemer/codecompanion-history.nvim for recognized options
-                history = {
-                    enabled = true,
-                    opts = {
-                        auto_generate_titles = true,
-                        title_generation_opts = {
-                            adapter = 'copilot',
-                            model = 'gpt-5-mini',
-                        },
-                        summary = {
-                            generation_opts = {
-                                adapter = 'gemini',
-                                model = 'gemini-3-flash-preview',
-                                context_size = 90000, -- max tokens that the model supports
-                                include_references = true, -- include slash command content
-                                include_tool_outputs = true, -- include tool execution results
-                                system_prompt = nil, -- custom system prompt (string or function)
-                                format_summary = nil, -- custom function to format generated summary e.g to remove <think/> tags from summary
-                            },
-                        },
-                    },
-                },
                 -- mcphub = {
                 --     callback = 'mcphub.extensions.codecompanion',
                 --     opts = {
