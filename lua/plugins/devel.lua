@@ -42,6 +42,47 @@ return {
     },
 
     {
+        -- command :TinyInlineDiag (toggle, disable, enable)
+        'rachartier/tiny-inline-diagnostic.nvim',
+        event = 'VeryLazy',
+        priority = 1000,
+        config = function()
+            require('tiny-inline-diagnostic').setup()
+            vim.diagnostic.config { virtual_text = false } -- Disable Neovim's default virtual text diagnostics
+        end,
+    },
+
+    -- Copilot
+    {
+        'zbirenbaum/copilot.lua',
+        event = 'InsertEnter',
+        opts = {
+            suggestion = {
+                enabled = true,
+                auto_trigger = true,
+                keymap = {
+                    accept = '<M-.>',
+                    accept_word = '<M-w>',
+                    accept_line = '<M-l>',
+                    next = '<M-]>',
+                    prev = '<M-[>',
+                    -- dismiss = '<C-/>',
+                },
+            },
+            panel = {
+                enabled = true,
+            },
+            filetypes = {
+                markdown = true,
+                yaml = true,
+            },
+        },
+        config = function(_, opts)
+            require('copilot').setup(opts)
+        end,
+    },
+
+    {
         'NickvanDyke/opencode.nvim',
         dependencies = {
             -- Recommended for `ask()` and `select()`.
