@@ -88,7 +88,8 @@ return {
                             },
                             schema = {
                                 model = {
-                                    default = 'gemini-3-flash-preview',
+                                    default = 'gemini-3.5-flash',
+                                    -- default = 'gemini-3-flash-preview',
                                     -- choices = {
                                     --     'gemini-2.5-flash',
                                     --     'gemini-2.5-pro',
@@ -138,6 +139,7 @@ return {
                                         'grok-code-fast-1',
                                         'grok-4-fast-reasoning',
                                         'grok-4-fast-non-reasoning',
+                                        'grok-4.5',
                                     },
                                 },
                             },
@@ -155,7 +157,7 @@ return {
             },
             interactions = {
                 agent = { adapter = 'copilot' },
-                inline = {
+                inline = { -- in v19. renamed from "inline" to "shared"
                     adapter = 'copilot',
                     keymaps = {
                         accept_change = {
@@ -186,6 +188,7 @@ return {
                         },
                     },
                 },
+                -- v.19 dropped support for mini.diff
                 diff = {
                     provider = 'mini.diff',
                 },
@@ -197,8 +200,10 @@ return {
                     opts = {
                         auto_generate_titles = true,
                         title_generation_opts = {
-                            adapter = 'gemini',
-                            model = 'gemini-2.5-flash',
+                            -- adapter = 'gemini',
+                            -- model = 'gemini-2.5-flash',
+                            adapter = 'copilot',
+                            model = 'gpt-5-mini',
                         },
                         summary = {
                             generation_opts = {

@@ -27,20 +27,6 @@ vim.api.nvim_create_autocmd('FileType', {
     end,
 })
 
-vim.api.nvim_create_autocmd('VimEnter', {
-    group = vim.api.nvim_create_augroup('mariasolos/dotfiles_setup', { clear = true }),
-    desc = 'Special dotfiles setup',
-    callback = function()
-        local ok, inside_dotfiles = pcall(vim.startswith, vim.fn.getcwd(), vim.env.XDG_CONFIG_HOME)
-        if not ok or not inside_dotfiles then
-            return
-        end
-
-        -- Configure git environment.
-        vim.env.GIT_WORK_TREE = vim.env.HOME
-        vim.env.GIT_DIR = vim.env.HOME .. '/.cfg'
-    end,
-})
 
 -- vim.api.nvim_create_autocmd('CmdwinEnter', {
 --     group = vim.api.nvim_create_augroup('mariasolos/execute_cmd_and_stay', { clear = true }),
