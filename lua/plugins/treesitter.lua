@@ -104,6 +104,7 @@ return {
         },
         {
             'nvim-treesitter/nvim-treesitter-textobjects',
+            branch = 'main',
         },
         lazy = false,
         build = ':TSUpdate',
@@ -114,7 +115,10 @@ return {
             vim.api.nvim_create_autocmd('FileType', {
                 group = group,
                 callback = function(event)
-                    if not pcall(vim.treesitter.start) then
+
+                    local ok, err = pcall(vim.treesitter.start, event.buf)
+                    if not ok then
+                        vim.notify(err, vim.log.levels.DEBUG)
                         return
                     end
 

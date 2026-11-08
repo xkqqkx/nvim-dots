@@ -84,6 +84,8 @@ return {
 
     {
         'NickvanDyke/opencode.nvim',
+        enabled = false, -- disabled for now, not sure if I want to use it
+
         dependencies = {
             -- Recommended for `ask()` and `select()`.
             -- Required for `snacks` provider.
@@ -119,8 +121,8 @@ return {
                 require('opencode').command 'session.half.page.down'
             end, { desc = 'opencode half page down' })
             -- You may want these if you stick with the opinionated "<C-a>" and "<C-x>" above — otherwise consider "<leader>o".
-            vim.keymap.set('n', '+', '<C-a>', { desc = 'Increment', noremap = true })
-            vim.keymap.set('n', '-', '<C-x>', { desc = 'Decrement', noremap = true })
+            -- vim.keymap.set('n', '+', '<C-a>', { desc = 'Increment', noremap = true })
+            -- vim.keymap.set('n', '-', '<C-x>', { desc = 'Decrement', noremap = true })
         end,
     },
 }
