@@ -6,7 +6,7 @@ return {
         local keymap = vim.keymap.set
 
         local function toggle_detail()
-            local detail = false
+            local detail = require('oil').get_columns()
             detail = not detail
             if detail then
                 require('oil').set_columns { 'icon', 'permissions', 'size', 'mtime' }
