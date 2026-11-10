@@ -9,6 +9,8 @@ return {
         ---@type render.md.UserConfig
         opts = {
             file_types = { 'markdown', 'codecompanion' },
+            -- 'padded' (default) drops the space after each '|' here, so cells shift left.
+            pipe_table = { cell = 'overlay' },
         },
     },
 
